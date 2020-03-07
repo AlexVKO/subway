@@ -17,10 +17,8 @@ defmodule YourApplication.UserEvents do
   use Subway
 
   defevent "listing_favorited" do # <- You can have multiple events like this
-    field :user_id, :integer # <- Ecto api
+    field :user_id, :integer # <- Ecto.Schema api (id an timestamps are automatically defined)
     field :listing_id, :integer
-
-    timestamps
   end
 end
 ```
@@ -42,11 +40,16 @@ defmodule YourApplication.UserEvents do
   # These fields will be merged to the event's fields defined in this context.
   @common_fields %{
     user_id: :integer,
-    listing_id: :integer,
   }
 
-  defevent "listing_favorited" do, end
-  defevent "listing_unfavorited" do, end
+  defevent "listing_favorited" do 
+    field :listing_id, :integer
+  end
+
+  defevent "support_message_sent" do
+    field :subject, :string
+    field :content, :string
+  end
 end
 ```
 
@@ -57,7 +60,7 @@ end
   # params = %{ user_id: 1, listing_id: 1 })
   case UserEvents.notify("listing_favorited", params) do
     {:ok, event} -> "Yay! The event was broadcasted successfully"
-    {:error, event} -> "Validation errors is included in the event changeset"
+    {:error, event} -> "Validation errors are included in the event changeset"
   end
 ```
 
