@@ -1,20 +1,20 @@
 # Subway
 
-An minimalist event bus library for Elixir.
+An minimalist event ~bus~ subway library for Elixir. (UNDER DEVELOPMENT)
 
 ## Simple usage in 4 steps:
 
 ### 1) Create your first event context:
 ```elixir
 defmodule YourApplication.UserEvents do
-  use EventBus
+  use Subway
 end
 ```
 
 ### 2) Define your events into it:
 ```elixir
 defmodule YourApplication.UserEvents do
-  use EventBus
+  use Subway
 
   defevent "listing_favorited" do # <- You can have multiple events like this
     field :user_id, :integer # <- Ecto api
@@ -30,7 +30,7 @@ end
 defmodule YourApplication.UserEvents do
   alias YourApplication.Events.Subscribers
 
-  use EventBus,
+  use Subway,
     subscribers: [
       # Subscribers are simple modules that implement supported_event?/1 and handle_event/1
       Subscribers.PersistOnMongoDB,
@@ -63,7 +63,7 @@ end
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+If [available in Hex](https://hex.pm/packages/subway), the package can be installed
 by adding `subway` to your list of dependencies in `mix.exs`:
 
 ```elixir
