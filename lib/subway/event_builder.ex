@@ -1,4 +1,4 @@
-defmodule Subway.Import do
+defmodule Subway.EventBuilder do
   defmacro defevent(event_mod, do_block) do
     event_name = event_mod |> Macro.to_string() |> Macro.underscore()
     event_context = __CALLER__.module

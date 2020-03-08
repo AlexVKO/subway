@@ -1,7 +1,7 @@
 defmodule Subway do
   defmacro __using__(opts \\ []) do
     quote do
-      import Subway.Import
+      import Subway.EventBuilder
 
       def notify_subscribers(event_name, %{payload: _, changeset: _} = params) do
         Enum.each(unquote(opts[:subscribers]), fn subscriber_mod ->
