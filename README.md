@@ -2,16 +2,9 @@
 
 An minimalist event ~bus~ subway library for Elixir. (UNDER DEVELOPMENT)
 
-## Simple usage in 4 steps:
+## Simple usage:
 
-### 1) Create your first event context:
-```elixir
-defmodule YourApplication.UserEvents do
-  use Subway
-end
-```
-
-### 2) Define your events into it:
+### 1) Create your first event context with an event definition:
 ```elixir
 defmodule YourApplication.UserEvents do
   use Subway
@@ -23,7 +16,7 @@ defmodule YourApplication.UserEvents do
 end
 ```
 
-### 3) Define the subscribers(who will be notified when these event happen):
+### 2) Define the subscribers(who will be notified when these event happen):
 ```elixir
 defmodule YourApplication.UserEvents do
   alias YourApplication.Events.Subscribers
@@ -35,32 +28,32 @@ defmodule YourApplication.UserEvents do
       Subscribers.SendToHubspot,
       Subscribers.TriggerClientWebhook,
       Subscribers.EnqueueToRedis,
-    ] 
+    ]
 
   # These fields will be merged to the event's fields defined in this context.
   @common_fields %{
-    user_id: :integer,
+    user_id: :integer
   }
 
-  defevent "listing_favorited" do 
-    field :listing_id, :integer
+  defevent ListingFavorited do
+    field :listing_id, :integer, required: true
   end
 
-  defevent "support_message_sent" do
+  defevent SupportMessageSent do
     field :subject, :string
     field :content, :string
   end
 end
 ```
 
-### 4) Start tracking!
+### 3) Start tracking!
 ```elixir
   alias YourApplication.UserEvents
 
   # params = %{ user_id: 1, listing_id: 1 })
   case UserEvents.notify("listing_favorited", params) do
-    {:ok, event} -> "Yay! The event was broadcasted successfully"
-    {:error, event} -> "Validation errors are included in the event changeset"
+    {:ok, payload} -> "Yay! The event was broadcasted successfully"
+    {:error, errors} -> "Could be validation errors"
   end
 ```
 
