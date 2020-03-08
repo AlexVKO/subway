@@ -1,3 +1,4 @@
+# A guinea pig event contex
 defmodule UserEvents do
   use Subway, subscribers: [GenSubscriber]
 
@@ -12,13 +13,21 @@ defmodule UserEvents do
   end
 end
 
+# A guinea pig subscriber.
 defmodule GenSubscriber do
+  alias Subway.Subscriber
+  @behaviour Subscriber
+
+  @impl Subscriber
   def supported_event?(event_name) do
     Regex.match?(~r/message_sent/, event_name)
   end
 
+  @impl Subscriber
   def handle(_event_name, %{payload: payload}) do
     send(self(), Map.merge(payload, %{from: "GenSubscriber"}))
+
+    :ok
   end
 end
 
