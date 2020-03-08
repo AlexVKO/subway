@@ -22,15 +22,20 @@ defmodule Subway do
     If the payload is valid it will broadcast to predefined subscribers,
     this is an example of a subscriber:
 
-    defmodule GenSubscriber do
-      def handle_event?(event_name) do
-         # Check inside a list of events or with a Regex.
-      end
+      defmodule GenSubscriber do
+        alias Subway.Subscriber
+        @behaviour Subscriber
 
-      def handle(event_name, %{payload: payload, changeset: changeset}) do
-        # do your logic here...
+        @impl Subscriber
+        def handle_event?(event_name) do
+          # Check inside a list of events or with a Regex.
+        end
+
+        @impl Subscriber
+        def handle(event_name, %{payload: payload, changeset: changeset}) do
+          # do your logic here...
+        end
       end
-    end
   """
 
   defmacro __using__(opts \\ []) do
